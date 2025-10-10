@@ -1,5 +1,6 @@
 import { HttpMethods } from "./components/HttpMethods"
-import { GetAllCars } from "./GetAllCars"
+import { PostCar } from "./components/postCar"
+import { GetAllCars } from "./components/getCar"
 
 function App() {
 
@@ -7,6 +8,7 @@ function App() {
     <section className="container mb-5 text-center">
       <h1 className="">CRUD API REST</h1>
       <HttpMethods />
+      <PostCar />
       <GetAllCars />
     </section>
   )

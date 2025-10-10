@@ -1,16 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import { Loading } from './components/Loading';
+import React, { useContext, useEffect, useState } from 'react'
+import { Loading } from './Loading';
+import { MethodContext } from '../../context/MethodsContext';
 
 function GetAllCars() {
-  const [loading, setLoading] = useState(true)
-  const [dataCars, setDataCars] = useState([]);
-
-  const getAllCars = () => {
-    fetch('https://api-rest-cars-zwl7.onrender.com/cars')
-      .then(res => res.json())
-      .then(data => setDataCars(data))
-      .catch(err => console.warn(err))
-  }
+  const { dataCars, getAllCars } = useContext(MethodContext);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setTimeout(() => {
