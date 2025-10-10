@@ -6,6 +6,17 @@ function GetAllCars() {
   const { dataCars, getAllCars } = useContext(MethodContext);
   const [loading, setLoading] = useState(true);
 
+  const handleDelete = (id) => {
+    fetch(`https://api-rest-cars-zwl7.onrender.com/cars/${id}`, {
+      method: 'DELETE'
+    })
+      .then(() => {
+        alert('DELETED')
+        getAllCars()
+      })
+      .catch(err => console.log("ERROR NOT ELIMINATED", err))
+  }
+
   useEffect(() => {
     setTimeout(() => {
       setLoading(false)
@@ -34,6 +45,16 @@ function GetAllCars() {
                     <p>$ {car.price}</p>
                     <p>Rating: {car.rating} {'⭐'.repeat(car.rating)}</p>
                   </div>
+
+                  <div className='d-flex gap-5 justify-content-center mb-3'>
+                    <button className='btn btn-info'>Edit</button>
+                    <button className='btn btn-danger'
+                      onClick={() => handleDelete(car.id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+
                 </div>
               )
             }
