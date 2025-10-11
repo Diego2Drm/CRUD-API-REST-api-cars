@@ -1,12 +1,13 @@
 import React, { useContext, useState } from 'react'
 import { validateCar, validatePartialCar } from '../../schemas/carSchemas';
 import { MethodContext } from '../../context/MethodsContext';
+import Swal from 'sweetalert2';
 
 
 function PostForm() {
   const { getAllCars, newCar, setNewCar, cleanForm, edit, setEdit, currentID, initialFormData } = useContext(MethodContext);
   const [errors, setErrors] = useState([]);
-  const [success, setSuccess] = useState(false);
+  // const [success, setSuccess] = useState(false);
 
   const handlePostCar = () => {
     const result = validateCar(newCar)
@@ -28,10 +29,11 @@ function PostForm() {
       .then(() => {
         getAllCars()
         setNewCar(initialFormData);
-        setSuccess(true)
-        setTimeout(() => {
-          setSuccess(false)
-        }, 2000)
+        Swal.fire({
+          title: "Good job!",
+          text: "Added with success",
+          icon: "success"
+        });
         setErrors([]);
       }).catch(err => console.error(err)
       )
@@ -57,12 +59,12 @@ function PostForm() {
       .then(() => {
         getAllCars()
         setNewCar(initialFormData);
-        setSuccess(true)
-        setTimeout(() => {
-          setSuccess(false)
-        }, 2000)
         setEdit(false)
-        console.log('Actalizado')
+        Swal.fire({
+          title: "Good job!",
+          text: "Updated with success",
+          icon: "success"
+        });
         setErrors([]);
       })
       .catch(err => console.error(err)
@@ -152,11 +154,15 @@ function PostForm() {
       {errors.rating && <span>{errors.rating._errors[0]}</span>}
 
       <div className="modal-footer">
-        <button type="submit" className="btn btn-success">Confirm</button>
+        {
+          edit ?
+            <button type="submit" className="btn btn-secondary">Update</button> :
+            <button type="submit" className="btn btn-success">Confirm</button>
+        }
         <button type="button" className="btn btn-danger" data-bs-dismiss="modal" onClick={cleanForm}>Cancel</button>
       </div>
 
-      {success && <p className='text-primary fst-italic'>Added with success!🎉🎉</p>}
+      {/* {success && <p className='text-primary fst-italic'>Added with success!🎉🎉</p>} */}
     </form>
   )
 }

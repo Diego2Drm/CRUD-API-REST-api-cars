@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Loading } from './Loading';
 import { MethodContext } from '../../context/MethodsContext';
+import Swal from 'sweetalert2';
 
 function GetAllCars() {
   const { dataCars, getAllCars, editCar } = useContext(MethodContext);
@@ -12,8 +13,13 @@ function GetAllCars() {
       method: 'DELETE'
     })
       .then(() => {
-        alert('DELETED')
+        Swal.fire({
+          title: "Deleted with success",
+          icon: "success",
+          draggable: true
+        });
         getAllCars()
+
       })
       .catch(err => console.log("ERROR NOT ELIMINATED", err))
   }

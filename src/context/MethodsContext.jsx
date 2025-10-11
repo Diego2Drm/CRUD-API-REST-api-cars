@@ -3,7 +3,7 @@ import { createContext, useState } from "react";
 const MethodContext = createContext();
 
 const MethodContextProvider = ({ children }) => {
- const initialFormData = {
+  const initialFormData = {
     image: '',
     brand: '',
     model: '',
@@ -35,7 +35,8 @@ const MethodContextProvider = ({ children }) => {
   }
 
   const cleanForm = () => {
-    setNewCar(initialFormData); console.log('CLEAN');
+    setNewCar(initialFormData);
+    setEdit(false)
   }
   const value = {
     dataCars,
@@ -43,10 +44,11 @@ const MethodContextProvider = ({ children }) => {
     newCar,
     setNewCar,
     editCar,
-    cleanForm,
     edit,
     setEdit,
-    currentID,initialFormData
+    currentID,
+    cleanForm,
+    initialFormData,
   }
 
   return (
