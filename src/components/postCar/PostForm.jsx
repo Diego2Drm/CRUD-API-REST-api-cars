@@ -1,26 +1,15 @@
 import React, { useContext, useState } from 'react'
-import { validateCar } from '../../schemas/carSchemas';
+import { validateCar, validatePartialCar } from '../../schemas/carSchemas';
 import { MethodContext } from '../../context/MethodsContext';
 
+
 function PostForm() {
-  const { getAllCars } = useContext(MethodContext);
-
-  const initialFormData = {
-    image: '',
-    brand: '',
-    model: '',
-    price: '',
-    rating: '',
-  };
-
-  const [newcar, setNewcar] = useState(initialFormData);
+  const { getAllCars, newCar, setNewCar, cleanForm, edit, setEdit, currentID, initialFormData } = useContext(MethodContext);
   const [errors, setErrors] = useState([]);
   const [success, setSuccess] = useState(false);
 
-
   const handlePostCar = () => {
-    const result = validateCar(newcar)
-
+    const result = validateCar(newCar)
     if (!result.success) {
       const formattedErrors = result.error.format();
       setErrors(formattedErrors);
@@ -38,18 +27,55 @@ function PostForm() {
       .then(res => res.json())
       .then(() => {
         getAllCars()
-        setNewcar(initialFormData);
+        setNewCar(initialFormData);
         setSuccess(true)
         setTimeout(() => {
           setSuccess(false)
         }, 2000)
+        setErrors([]);
       }).catch(err => console.error(err)
+      )
+  }
+
+  const updateCar = (id) => {
+    const result = validatePartialCar(newCar)
+    if (!result.success) {
+      const formattedErrors = result.error.format();
+      setErrors(formattedErrors);
+      console.log('Error validation', formattedErrors);
+      return;
+    }
+
+    fetch(`https://api-rest-cars-zwl7.onrender.com/cars/${id}`, {
+      method: "PATCH",
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8'
+      },
+      body: JSON.stringify(result.data)
+    })
+      .then(res => res.json())
+      .then(() => {
+        getAllCars()
+        setNewCar(initialFormData);
+        setSuccess(true)
+        setTimeout(() => {
+          setSuccess(false)
+        }, 2000)
+        setEdit(false)
+        console.log('Actalizado')
+        setErrors([]);
+      })
+      .catch(err => console.error(err)
       )
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    handlePostCar()
+    if (edit) {
+      updateCar(currentID);
+    } else {
+      handlePostCar()
+    }
   }
 
   return (
@@ -59,11 +85,11 @@ function PostForm() {
           <i className="bi bi-card-image"></i>
         </span>
         <input type="text" className="form-control" placeholder="Image by url" aria-label="Image by url" aria-describedby="basic-addon1"
-          onChange={(e) => setNewcar(prev => ({
+          onChange={(e) => setNewCar(prev => ({
             ...prev,
             image: e.target.value
           }))}
-          value={newcar.image}
+          value={newCar.image}
         />
       </label>
       {errors.image && <span>{errors.image._errors[0]}</span>}
@@ -74,11 +100,11 @@ function PostForm() {
           <i className="bi bi-car-front"></i>
         </span>
         <input type="text" className="form-control" placeholder="Brand" aria-label="Brand" aria-describedby="basic-addon1"
-          onChange={(e) => setNewcar(prev => ({
+          onChange={(e) => setNewCar(prev => ({
             ...prev,
             brand: e.target.value
           }))}
-          value={newcar.brand}
+          value={newCar.brand}
         />
       </label>
       {errors.brand && <span>{errors.brand._errors[0]}</span>}
@@ -88,11 +114,11 @@ function PostForm() {
           <i className="bi bi-car-front-fill"></i>
         </span>
         <input type="text" className="form-control" placeholder="Model" aria-label="Model" aria-describedby="basic-addon1"
-          onChange={(e) => setNewcar(prev => ({
+          onChange={(e) => setNewCar(prev => ({
             ...prev,
             model: e.target.value
           }))}
-          value={newcar.model}
+          value={newCar.model}
         />
       </label>
       {errors.model && <span>{errors.model._errors[0]}</span>}
@@ -102,11 +128,11 @@ function PostForm() {
           <i className="bi bi-currency-dollar"></i>
         </span>
         <input type="number" className="form-control" placeholder="Price" aria-label="Price" aria-describedby="basic-addon1"
-          onChange={(e) => setNewcar(prev => ({
+          onChange={(e) => setNewCar(prev => ({
             ...prev,
             price: Number(e.target.value)
           }))}
-          value={newcar.price}
+          value={newCar.price}
         />
       </label>
       {errors.price && <span>{errors.price._errors[0]}</span>}
@@ -116,18 +142,18 @@ function PostForm() {
           <i className="bi bi-star-fill"></i>
         </span>
         <input type="number" className="form-control" placeholder="Rating" aria-label="Rating" aria-describedby="basic-addon1"
-          onChange={(e) => setNewcar(prev => ({
+          onChange={(e) => setNewCar(prev => ({
             ...prev,
             rating: Number(e.target.value)
           }))}
-          value={newcar.rating}
+          value={newCar.rating}
         />
       </label>
       {errors.rating && <span>{errors.rating._errors[0]}</span>}
 
       <div className="modal-footer">
         <button type="submit" className="btn btn-success">Confirm</button>
-        <button type="button" className="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" className="btn btn-danger" data-bs-dismiss="modal" onClick={cleanForm}>Cancel</button>
       </div>
 
       {success && <p className='text-primary fst-italic'>Added with success!🎉🎉</p>}

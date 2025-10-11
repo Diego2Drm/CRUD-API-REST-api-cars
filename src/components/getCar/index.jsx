@@ -3,8 +3,9 @@ import { Loading } from './Loading';
 import { MethodContext } from '../../context/MethodsContext';
 
 function GetAllCars() {
-  const { dataCars, getAllCars } = useContext(MethodContext);
+  const { dataCars, getAllCars, editCar } = useContext(MethodContext);
   const [loading, setLoading] = useState(true);
+
 
   const handleDelete = (id) => {
     fetch(`https://api-rest-cars-zwl7.onrender.com/cars/${id}`, {
@@ -47,7 +48,7 @@ function GetAllCars() {
                   </div>
 
                   <div className='d-flex gap-5 justify-content-center mb-3'>
-                    <button className='btn btn-info'>Edit</button>
+                    <button className='btn btn-info' data-bs-toggle="modal" data-bs-target="#exampleModal" onClick={() => editCar(car)}>Edit</button>
                     <button className='btn btn-danger'
                       onClick={() => handleDelete(car.id)}
                     >

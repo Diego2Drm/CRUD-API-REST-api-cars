@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { object, z } from 'zod'
 
 const CarSchemas = z.object({
   image: z.string().url("Must be a valid URL"),
@@ -11,3 +11,7 @@ const CarSchemas = z.object({
 export function validateCar(object) {
   return CarSchemas.safeParse(object);
 };
+
+export function validatePartialCar(object){
+  return CarSchemas.partial().safeParse(object);
+}
