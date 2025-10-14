@@ -1,4 +1,5 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 const MethodContext = createContext();
 
@@ -38,6 +39,42 @@ const MethodContextProvider = ({ children }) => {
     setNewCar(initialFormData);
     setEdit(false)
   }
+
+  // DELETE
+  const handleDelete = (id) => {
+    fetch(`https://api-rest-cars-zwl7.onrender.com/cars/${id}`, {
+      method: 'DELETE'
+    })
+      .then(() => {
+        Swal.fire({
+          title: "Deleted with success",
+          icon: "success",
+          draggable: true
+        });
+        getAllCars()
+
+      })
+      .catch(err => console.log("ERROR NOT ELIMINATED", err))
+  }
+  // Search by brand
+  const [search, setSearch] = useState('');
+  const [searchCars, setSearchCars] = useState([]);
+  const handleSearch = (e) => {
+    setSearch(e.target.value)
+  }
+
+  const searchByBrand = () => {
+    fetch(`https://api-rest-cars-zwl7.onrender.com/cars?brand=${search}`)
+      .then(res => res.json())
+      .then(data => setSearchCars(data))
+      .catch(err => console.log(err))
+  }
+
+  const cleanFIltered = () => {
+    setSearch('');
+    setSearchCars([]);
+  }
+
   const value = {
     dataCars,
     getAllCars,
@@ -48,7 +85,13 @@ const MethodContextProvider = ({ children }) => {
     setEdit,
     currentID,
     cleanForm,
+    handleDelete,
     initialFormData,
+    search,
+    handleSearch,
+    searchCars,
+    searchByBrand,
+    cleanFIltered,
   }
 
   return (

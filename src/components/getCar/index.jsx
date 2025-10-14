@@ -1,28 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Loading } from './Loading';
 import { MethodContext } from '../../context/MethodsContext';
-import Swal from 'sweetalert2';
+import { Cards } from './Cards';
 
 function GetAllCars() {
-  const { dataCars, getAllCars, editCar } = useContext(MethodContext);
+  const { dataCars, getAllCars, search, searchCars, cleanFIltered } = useContext(MethodContext);
   const [loading, setLoading] = useState(true);
-
-
-  const handleDelete = (id) => {
-    fetch(`https://api-rest-cars-zwl7.onrender.com/cars/${id}`, {
-      method: 'DELETE'
-    })
-      .then(() => {
-        Swal.fire({
-          title: "Deleted with success",
-          icon: "success",
-          draggable: true
-        });
-        getAllCars()
-
-      })
-      .catch(err => console.log("ERROR NOT ELIMINATED", err))
-  }
 
   useEffect(() => {
     setTimeout(() => {
@@ -31,42 +14,38 @@ function GetAllCars() {
     }, 2000)
 
   }, [])
-
+  const hasResults = searchCars.length > 0;
   return (
     <section className='mt-5'>
-      <h3 className='mb-5'>Get All Cars</h3>
+      <div className='d-flex justify-content-between align-items-center mb-5'>
+        {
+          hasResults ?
+            <h3 className='text-secondary'>Brand:
+              <span className='text-capitalize text-primary m-2'>
+                {search}
+              </span>
+            </h3> :
+            <h3 className=''>Get All Cars</h3>
+        }
+        {
+          hasResults && <button className='btn btn-secondary' onClick={cleanFIltered}>Get All Cars</button>
+        }
+      </div>
 
       {
-        loading ? <Loading /> :
-
-          <div className='d-flex flex-wrap gap-3'>
-            {
-              dataCars.map(car =>
-                <div className="card bg-transparent rounded text-white border-1 border-white" style={{ width: "15rem" }} key={car.id}>
-                  <img src={car.image} className="card-img-top" alt="..." />
-                  <div className="card-body">
-                    <h5 className="card-title">Brand: {car.brand}</h5>
-                    <p className="card-text">
-                      Model: {car.model}
-                    </p>
-                    <p>$ {car.price}</p>
-                    <p>Rating: {car.rating} {'⭐'.repeat(car.rating)}</p>
-                  </div>
-
-                  <div className='d-flex gap-5 justify-content-center mb-3'>
-                    <button className='btn btn-info' data-bs-toggle="modal" data-bs-target="#exampleModal" onClick={() => editCar(car)}>Edit</button>
-                    <button className='btn btn-danger'
-                      onClick={() => handleDelete(car.id)}
-                    >
-                      Delete
-                    </button>
-                  </div>
-
-                </div>
-              )
-            }
-          </div>
+        loading && <Loading />
       }
+
+      {
+        searchCars.length > 0 ?
+
+          <Cards data={searchCars} />
+          :
+
+          <Cards data={dataCars} />
+
+      }
+
     </section>
   )
 }
