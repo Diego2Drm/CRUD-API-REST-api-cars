@@ -78,7 +78,7 @@ function PostForm() {
         <span className="input-group-text" id="basic-addon1">
           <i className="bi bi-star-fill"></i>
         </span>
-        <input type="number" className="form-control" placeholder="Rating" aria-label="Rating" aria-describedby="basic-addon1"
+        <input type="number" className="form-control" placeholder="Rating 1-5" aria-label="Rating" aria-describedby="basic-addon1"
           onChange={(e) => setNewCar(prev => ({
             ...prev,
             rating: Number(e.target.value)

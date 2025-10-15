@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { PostForm } from './PostForm'
 import { MethodContext } from '../../context/MethodsContext'
+import { Example } from './Example';
 
 function PostCar() {
   const { edit, cleanForm } = useContext(MethodContext);
@@ -13,7 +14,7 @@ function PostCar() {
 
       {/* <!-- Modal --> */}
       <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div className="modal-dialog">
+        <div className="modal-dialog modal-dialog-scrollable">
           <div className="modal-content">
             <div className="modal-header">
               <h1 className="modal-title fs-5" id="exampleModalLabel">
@@ -25,6 +26,7 @@ function PostCar() {
             </div>
             <div className="modal-body">
               < PostForm />
+              <Example />
             </div>
 
           </div>
