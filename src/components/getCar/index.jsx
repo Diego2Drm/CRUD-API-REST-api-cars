@@ -37,7 +37,7 @@ function GetAllCars() {
       }
 
       {
-        searchCars.length > 0 ?
+        hasResults ?
 
           <Cards data={searchCars} />
           :

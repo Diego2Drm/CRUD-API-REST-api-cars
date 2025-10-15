@@ -1,5 +1,6 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
 import Swal from "sweetalert2";
+import { validateCar, validatePartialCar } from "../schemas/carSchemas";
 
 const MethodContext = createContext();
 
@@ -12,6 +13,7 @@ const MethodContextProvider = ({ children }) => {
     rating: '',
   };
 
+  // GET ALL CARS AND BY BRAND
   const [dataCars, setDataCars] = useState([]);
   const getAllCars = () => {
     fetch('https://api-rest-cars-zwl7.onrender.com/cars')
@@ -19,7 +21,42 @@ const MethodContextProvider = ({ children }) => {
       .then(data => setDataCars(data))
       .catch(err => console.warn(err))
   }
+
   const [newCar, setNewCar] = useState(initialFormData);
+
+  // ADD NEW CAR
+  const [errors, setErrors] = useState([]);
+  const handlePostCar = () => {
+    const result = validateCar(newCar)
+    if (!result.success) {
+      const formattedErrors = result.error.format();
+      setErrors(formattedErrors);
+      console.log('Error validation', formattedErrors);
+      return;
+    }
+
+    fetch('https://api-rest-cars-zwl7.onrender.com/cars', {
+      method: "POST",
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8'
+      },
+      body: JSON.stringify(result.data)
+    })
+      .then(res => res.json())
+      .then(() => {
+        getAllCars()
+        setNewCar(initialFormData);
+        Swal.fire({
+          title: "Good job!",
+          text: "Added with success",
+          icon: "success"
+        });
+        setErrors([]);
+      }).catch(err => console.error(err)
+      )
+  }
+
+// EDIT CAR
   const [edit, setEdit] = useState(false);
   const [currentID, setCurrentID] = useState('');
 
@@ -34,10 +71,36 @@ const MethodContextProvider = ({ children }) => {
       rating: val.rating,
     })
   }
+  const updateCar = (id) => {
+    const result = validatePartialCar(newCar)
+    if (!result.success) {
+      const formattedErrors = result.error.format();
+      setErrors(formattedErrors);
+      console.log('Error validation', formattedErrors);
+      return;
+    }
 
-  const cleanForm = () => {
-    setNewCar(initialFormData);
-    setEdit(false)
+    fetch(`https://api-rest-cars-zwl7.onrender.com/cars/${id}`, {
+      method: "PATCH",
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8'
+      },
+      body: JSON.stringify(result.data)
+    })
+      .then(res => res.json())
+      .then(() => {
+        getAllCars()
+        setNewCar(initialFormData);
+        setEdit(false)
+        Swal.fire({
+          title: "Good job!",
+          text: "Updated with success",
+          icon: "success"
+        });
+        setErrors([]);
+      })
+      .catch(err => console.error(err)
+      )
   }
 
   // DELETE
@@ -56,6 +119,7 @@ const MethodContextProvider = ({ children }) => {
       })
       .catch(err => console.log("ERROR NOT ELIMINATED", err))
   }
+
   // Search by brand
   const [search, setSearch] = useState('');
   const [searchCars, setSearchCars] = useState([]);
@@ -70,11 +134,19 @@ const MethodContextProvider = ({ children }) => {
       .catch(err => console.log(err))
   }
 
+  // CLEAN FUNCTIONS
+  const cleanForm = () => {
+    setNewCar(initialFormData);
+    setEdit(false)
+    setErrors([])
+
+  }
   const cleanFIltered = () => {
     setSearch('');
     setSearchCars([]);
   }
 
+  // VALUES
   const value = {
     dataCars,
     getAllCars,
@@ -85,6 +157,9 @@ const MethodContextProvider = ({ children }) => {
     setEdit,
     currentID,
     cleanForm,
+    handlePostCar,
+    updateCar,
+    errors,
     handleDelete,
     initialFormData,
     search,

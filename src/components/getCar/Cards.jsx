@@ -2,9 +2,9 @@ import React, { useContext } from 'react'
 import { MethodContext } from '../../context/MethodsContext';
 
 function Cards({ data }) {
-  const { editCar, handleDelete} = useContext(MethodContext);
+  const { editCar, handleDelete } = useContext(MethodContext);
   return (
-    <div className='d-flex flex-wrap gap-3'>
+    <div className='d-flex flex-wrap gap-3 justify-content-center'>
       {
         data.map(car =>
           <div className="card bg-transparent rounded text-white border-1 border-white" style={{ width: "15rem" }} key={car.id}>

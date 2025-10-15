@@ -1,75 +1,10 @@
-import React, { useContext, useState } from 'react'
-import { validateCar, validatePartialCar } from '../../schemas/carSchemas';
+import React, { useContext } from 'react'
 import { MethodContext } from '../../context/MethodsContext';
-import Swal from 'sweetalert2';
 
 
 function PostForm() {
-  const { getAllCars, newCar, setNewCar, cleanForm, edit, setEdit, currentID, initialFormData } = useContext(MethodContext);
-  const [errors, setErrors] = useState([]);
-  // const [success, setSuccess] = useState(false);
+  const { newCar, setNewCar, cleanForm, edit, currentID, handlePostCar, updateCar, errors } = useContext(MethodContext);
 
-  const handlePostCar = () => {
-    const result = validateCar(newCar)
-    if (!result.success) {
-      const formattedErrors = result.error.format();
-      setErrors(formattedErrors);
-      console.log('Error validation', formattedErrors);
-      return;
-    }
-
-    fetch('https://api-rest-cars-zwl7.onrender.com/cars', {
-      method: "POST",
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8'
-      },
-      body: JSON.stringify(result.data)
-    })
-      .then(res => res.json())
-      .then(() => {
-        getAllCars()
-        setNewCar(initialFormData);
-        Swal.fire({
-          title: "Good job!",
-          text: "Added with success",
-          icon: "success"
-        });
-        setErrors([]);
-      }).catch(err => console.error(err)
-      )
-  }
-
-  const updateCar = (id) => {
-    const result = validatePartialCar(newCar)
-    if (!result.success) {
-      const formattedErrors = result.error.format();
-      setErrors(formattedErrors);
-      console.log('Error validation', formattedErrors);
-      return;
-    }
-
-    fetch(`https://api-rest-cars-zwl7.onrender.com/cars/${id}`, {
-      method: "PATCH",
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8'
-      },
-      body: JSON.stringify(result.data)
-    })
-      .then(res => res.json())
-      .then(() => {
-        getAllCars()
-        setNewCar(initialFormData);
-        setEdit(false)
-        Swal.fire({
-          title: "Good job!",
-          text: "Updated with success",
-          icon: "success"
-        });
-        setErrors([]);
-      })
-      .catch(err => console.error(err)
-      )
-  }
 
   const handleSubmit = (e) => {
     e.preventDefault();

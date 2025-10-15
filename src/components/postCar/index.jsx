@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { PostForm } from './PostForm'
+import { MethodContext } from '../../context/MethodsContext'
 
 function PostCar() {
+  const { edit, cleanForm } = useContext(MethodContext);
   return (
     <div className='d-flex justify-content-end'>
       {/* <!-- Button trigger modal --> */}
@@ -15,14 +17,16 @@ function PostCar() {
           <div className="modal-content">
             <div className="modal-header">
               <h1 className="modal-title fs-5" id="exampleModalLabel">
-                POST Add New Car
+                {
+                  edit ? 'PATCH- Edit Car' : 'POST- Add New Car '
+                }
               </h1>
-              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={cleanForm}></button>
             </div>
             <div className="modal-body">
               < PostForm />
             </div>
-           
+
           </div>
         </div>
       </div>
