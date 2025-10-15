@@ -1,16 +1,51 @@
-# React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# CRUD API REST CARS
 
-Currently, two official plugins are available:
+## Http Methods
+- GET
+- POST
+- PUT
+- PATCH
+- DELETE
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Links
 
-## React Compiler
+- Guide APi: [api](https://github.com/Diego2Drm/multi-step-form)
+- Live Site URL: [crud-api-rest-cars](https://crud-api-rest-cars-diego2d.netlify.app/)
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
 
-## Expanding the ESLint configuration
+### Screenshot
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+![](./src/assets/get.png)
+
+## My process
+
+### Built with
+
+- Semantic HTML5 markup
+- Flexbox
+- Mobile-first workflow
+- [React](https://reactjs.org/) - JS library
+- [Bootstrap 5](https://getbootstrap.com/) - For styles
+
+ ### What I learned
+
+-I learned how to make a crud with the http methods
+
+Commands used
+```bash
+pnpm create vite
+pnpm add bootstrap
+pnpm add zod
+pnpm add sweetalert2
+```
+
+### Continued development
+- Express js.
+- forms.
+
+## Author
+
+- Website - [Diego Ramírez](https://diego2drm.github.io/Portafolio/)
+- Frontend Mentor - [@Diego2Drm](https://www.frontendmentor.io/profile/Diego2Drm)
+- Gmail - [diego.ramirez2d03@gmail.com]
