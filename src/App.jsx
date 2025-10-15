@@ -6,7 +6,7 @@ import { Search } from "./components/search/Search"
 function App() {
 
   return (
-    <section className="container mb-5 text-center">
+    <section className="container mb-5 mt-3 text-center">
       <h1 className="">CRUD API REST</h1>
       <HttpMethods />
       <PostCar />

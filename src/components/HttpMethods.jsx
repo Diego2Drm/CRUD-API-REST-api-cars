@@ -11,6 +11,12 @@ function HttpMethods() {
         <li>PATCH</li>
         <li>DELETE</li>
       </ul>
+
+      <a href="https://github.com/Diego2Drm/api-rest-cars/tree/main"
+      className='text-danger'
+      >
+        Guie API REST CARS
+      </a>
     </div>
   )
 }
