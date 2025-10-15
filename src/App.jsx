@@ -12,6 +12,10 @@ function App() {
       <PostCar />
       <Search />
       <GetAllCars />
+
+      <div className="text-center fs-6">
+        Coded by <a href="https://github.com/Diego2Drm/CRUD-API-REST-api-cars/tree/main" className="text-blue-500">Diego Ramirez</a>.
+      </div>
     </section>
   )
 }
